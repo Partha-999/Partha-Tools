@@ -230,7 +230,7 @@ function Header({
                     </div>
                     <div>
                         <p className="text-sm font-semibold tracking-[0.24em] uppercase text-[var(--muted)]">
-                            ParthaTools
+                            Partha Tools
                         </p>
                         <p className="text-xs text-[var(--muted)]">Utility tools, refined</p>
                     </div>
