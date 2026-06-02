@@ -36,6 +36,9 @@ export const metadata: Metadata = {
     title: "ParthaTools | Modern Utility Tools",
     description: "ParthaTools is a modern utility homepage for developer, PDF, image, text, and web tools.",
   },
+  verification: {
+    google: "nm7dxRroL7dqwW2pCrvUdwTGtG6eyhI8fwT7N711V18",
+  },
 };
 
 const themeScript = `
