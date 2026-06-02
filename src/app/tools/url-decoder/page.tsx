@@ -3,18 +3,15 @@ import Link from "next/link";
 
 import { URLDecoderTool } from "@/components/url-decoder-tool";
 import { getToolBySlug } from "@/data/tools";
+import { getToolMetadata } from "@/utils/metadata";
 
 const tool = getToolBySlug("url-decoder");
 
-export const metadata: Metadata = tool
-    ? {
-        title: tool.seoTitle,
-        description: tool.seoDescription,
-    }
-    : {
-        title: "URL Decoder | ParthaTools",
-        description: "Decode URL-encoded parameters back into human-readable text.",
-    };
+export const metadata: Metadata = getToolMetadata(
+    "url-decoder",
+    "URL Decoder | ParthaTools",
+    "Decode URL-encoded parameters back into human-readable text."
+);
 
 export default function URLDecoderPage() {
     return (

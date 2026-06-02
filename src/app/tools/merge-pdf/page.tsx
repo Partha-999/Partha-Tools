@@ -3,18 +3,15 @@ import Link from "next/link";
 
 import { MergePDFTool } from "@/components/merge-pdf-tool";
 import { getToolBySlug } from "@/data/tools";
+import { getToolMetadata } from "@/utils/metadata";
 
 const tool = getToolBySlug("merge-pdf");
 
-export const metadata: Metadata = tool
-    ? {
-        title: tool.seoTitle,
-        description: tool.seoDescription,
-    }
-    : {
-        title: "Merge PDF | ParthaTools",
-        description: "Merge multiple PDF files into one easily and securely in your browser.",
-    };
+export const metadata: Metadata = getToolMetadata(
+    "merge-pdf",
+    "Merge PDF | ParthaTools",
+    "Merge multiple PDF files into one easily and securely in your browser."
+);
 
 export default function MergePDFPage() {
     return (

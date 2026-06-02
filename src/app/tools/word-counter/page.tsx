@@ -3,18 +3,15 @@ import Link from "next/link";
 
 import { WordCounterTool } from "@/components/word-counter-tool";
 import { getToolBySlug } from "@/data/tools";
+import { getToolMetadata } from "@/utils/metadata";
 
 const tool = getToolBySlug("word-counter");
 
-export const metadata: Metadata = tool
-    ? {
-        title: tool.seoTitle,
-        description: tool.seoDescription,
-    }
-    : {
-        title: "Word Counter | ParthaTools",
-        description: "Count words, estimate reading and speaking time, and check keyword density.",
-    };
+export const metadata: Metadata = getToolMetadata(
+    "word-counter",
+    "Word Counter | ParthaTools",
+    "Count words, estimate reading and speaking time, and check keyword density."
+);
 
 export default function WordCounterPage() {
     return (

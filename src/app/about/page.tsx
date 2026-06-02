@@ -1,0 +1,100 @@
+import type { Metadata } from "next";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+
+export const metadata: Metadata = {
+    title: "About Us",
+    description: "Learn more about ParthaTools, our privacy-first philosophy, and browser-based developer utilities.",
+    alternates: {
+        canonical: "/about",
+    },
+    openGraph: {
+        title: "About Us | ParthaTools",
+        description: "Learn more about ParthaTools, our privacy-first philosophy, and browser-based developer utilities.",
+        url: "https://parthatools.me/about",
+        type: "website",
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "About Us | ParthaTools",
+        description: "Learn more about ParthaTools, our privacy-first philosophy, and browser-based developer utilities.",
+    },
+};
+
+export default function AboutPage() {
+    return (
+        <main className="relative overflow-hidden min-h-screen flex flex-col justify-between">
+            <div className="absolute inset-x-0 top-0 -z-10 h-[28rem] bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.18),transparent_42%),radial-gradient(circle_at_80%_20%,rgba(168,85,247,0.14),transparent_28%)]" />
+            <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-4 pb-16 pt-5 sm:px-6 lg:px-8 lg:pb-20 flex-1">
+                <Header />
+
+                <section className="flex flex-col items-center text-center pt-8 pb-4 max-w-3xl mx-auto w-full">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--card)] px-3 py-1.5 text-xs text-[var(--muted)] shadow-[var(--shadow-soft)] backdrop-blur mb-5">
+                        <span className="h-2 w-2 rounded-full bg-[var(--accent)] animate-pulse" />
+                        Our Mission & Philosophy
+                    </div>
+
+                    <h1 className="text-4xl font-extrabold tracking-tight text-[var(--foreground)] sm:text-5xl">
+                        About ParthaTools
+                    </h1>
+
+                    <p className="mt-4 text-base leading-7 text-[var(--muted)] sm:text-lg">
+                        A curated repository of client-side developer, text, PDF, and web utilities. Refined, fast, and engineered with absolute privacy in mind.
+                    </p>
+                </section>
+
+                <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="rounded-[1.75rem] border border-[var(--border)] bg-[var(--card)] p-6 shadow-[var(--shadow-soft)] backdrop-blur">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500/20 to-cyan-400/10 border border-[var(--border)] mb-5">
+                            <svg className="h-6 w-6 text-[var(--accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                        <h3 className="text-lg font-semibold text-[var(--foreground)]">Absolute Privacy</h3>
+                        <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
+                            All processing is done entirely client-side using JavaScript in your browser. No files, text snippets, tokens, or payloads are ever uploaded to a server.
+                        </p>
+                    </div>
+
+                    <div className="rounded-[1.75rem] border border-[var(--border)] bg-[var(--card)] p-6 shadow-[var(--shadow-soft)] backdrop-blur">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500/20 to-yellow-400/10 border border-[var(--border)] mb-5">
+                            <svg className="h-6 w-6 text-[var(--accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <h3 className="text-lg font-semibold text-[var(--foreground)]">Zero Delay</h3>
+                        <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
+                            Without backend network requests, our utilities execute instantly. Format JSON, decode Base64, generate QR codes, or merge PDFs without lag.
+                        </p>
+                    </div>
+
+                    <div className="rounded-[1.75rem] border border-[var(--border)] bg-[var(--card)] p-6 shadow-[var(--shadow-soft)] backdrop-blur text-left">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500/20 to-fuchsia-400/10 border border-[var(--border)] mb-5">
+                            <svg className="h-6 w-6 text-[var(--accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                            </svg>
+                        </div>
+                        <h3 className="text-lg font-semibold text-[var(--foreground)]">Clean Experience</h3>
+                        <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
+                            No signup popups, cookie walls, or persistent advertisements. ParthaTools is created to be a fast utility workspace for immediate day-to-day work.
+                        </p>
+                    </div>
+                </section>
+
+                <section className="rounded-[2rem] border border-[var(--border)] bg-[var(--card-strong)] p-8 shadow-[var(--shadow)] backdrop-blur-xl">
+                    <div className="max-w-3xl">
+                        <h2 className="text-2xl font-bold text-[var(--foreground)]">Why ParthaTools?</h2>
+                        <p className="mt-4 text-sm leading-7 text-[var(--muted)]">
+                            As developers, we frequently copy and paste structured payloads like JSON, JWTs, and secure credentials into external online utilities to format or inspect them. Many third-party utilities run server-side logic, presenting security and data leakage risks.
+                        </p>
+                        <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
+                            ParthaTools resolves this by offering powerful utility components that run 100% inside your browser environment. Your data stays on your machine, ensuring compliance with strict security protocols while providing an experience that matches modern design sensibilities.
+                        </p>
+                    </div>
+                </section>
+
+                <Footer />
+            </div>
+        </main>
+    );
+}

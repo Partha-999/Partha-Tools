@@ -3,18 +3,15 @@ import Link from "next/link";
 
 import { URLEncoderTool } from "@/components/url-encoder-tool";
 import { getToolBySlug } from "@/data/tools";
+import { getToolMetadata } from "@/utils/metadata";
 
 const tool = getToolBySlug("url-encoder");
 
-export const metadata: Metadata = tool
-    ? {
-        title: tool.seoTitle,
-        description: tool.seoDescription,
-    }
-    : {
-        title: "URL Encoder | ParthaTools",
-        description: "Encode text and query strings for safe web transmission.",
-    };
+export const metadata: Metadata = getToolMetadata(
+    "url-encoder",
+    "URL Encoder | ParthaTools",
+    "Encode text and query strings for safe web transmission."
+);
 
 export default function URLEncoderPage() {
     return (

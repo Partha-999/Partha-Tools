@@ -2,19 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { PasswordGeneratorTool } from "@/components/password-generator-tool";
-import { getToolBySlug } from "@/data/tools";
+import { getToolMetadata } from "@/utils/metadata";
 
-const tool = getToolBySlug("password-generator");
-
-export const metadata: Metadata = tool
-    ? {
-        title: tool.seoTitle,
-        description: tool.seoDescription,
-    }
-    : {
-        title: "Password Generator | ParthaTools",
-        description: "Generate strong passwords instantly with ParthaTools.",
-    };
+export const metadata: Metadata = getToolMetadata(
+    "password-generator",
+    "Password Generator | ParthaTools",
+    "Generate strong passwords instantly with ParthaTools."
+);
 
 export default function PasswordGeneratorPage() {
     return (

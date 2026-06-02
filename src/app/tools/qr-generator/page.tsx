@@ -2,19 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { QrGeneratorTool } from "@/components/qr-generator-tool";
-import { getToolBySlug } from "@/data/tools";
+import { getToolMetadata } from "@/utils/metadata";
 
-const tool = getToolBySlug("qr-generator");
-
-export const metadata: Metadata = tool
-    ? {
-        title: tool.seoTitle,
-        description: tool.seoDescription,
-    }
-    : {
-        title: "QR Generator | ParthaTools",
-        description: "Generate QR codes instantly with the ParthaTools QR Generator.",
-    };
+export const metadata: Metadata = getToolMetadata(
+    "qr-generator",
+    "QR Generator | ParthaTools",
+    "Generate QR codes instantly with the ParthaTools QR Generator."
+);
 
 export default function QrGeneratorPage() {
     return (

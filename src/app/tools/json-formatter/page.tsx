@@ -2,19 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { JsonFormatterTool } from "@/components/json-formatter-tool";
-import { getToolBySlug } from "@/data/tools";
+import { getToolMetadata } from "@/utils/metadata";
 
-const tool = getToolBySlug("json-formatter");
-
-export const metadata: Metadata = tool
-    ? {
-        title: tool.seoTitle,
-        description: tool.seoDescription,
-    }
-    : {
-        title: "JSON Formatter | ParthaTools",
-        description: "Format JSON quickly with the ParthaTools JSON Formatter.",
-    };
+export const metadata: Metadata = getToolMetadata(
+    "json-formatter",
+    "JSON Formatter | ParthaTools",
+    "Format JSON quickly with the ParthaTools JSON Formatter."
+);
 
 export default function JsonFormatterPage() {
     return (

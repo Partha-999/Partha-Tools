@@ -2,19 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { JsonValidatorTool } from "@/components/json-validator-tool";
-import { getToolBySlug } from "@/data/tools";
+import { getToolMetadata } from "@/utils/metadata";
 
-const tool = getToolBySlug("json-validator");
-
-export const metadata: Metadata = tool
-    ? {
-        title: tool.seoTitle,
-        description: tool.seoDescription,
-    }
-    : {
-        title: "JSON Validator | ParthaTools",
-        description: "Validate JSON quickly with the ParthaTools JSON Validator.",
-    };
+export const metadata: Metadata = getToolMetadata(
+    "json-validator",
+    "JSON Validator | ParthaTools",
+    "Validate JSON quickly with the ParthaTools JSON Validator."
+);
 
 export default function JsonValidatorPage() {
     return (

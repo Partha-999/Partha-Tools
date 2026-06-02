@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-const starterInput = "https://parthatools.com/search?query=react & nextjs & category=developer tools";
+const starterInput = "https://parthatools.me/search?query=react & nextjs & category=developer tools";
 
 export function URLEncoderTool() {
     const [input, setInput] = useState(starterInput);

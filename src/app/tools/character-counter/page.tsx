@@ -3,18 +3,15 @@ import Link from "next/link";
 
 import { CharacterCounterTool } from "@/components/character-counter-tool";
 import { getToolBySlug } from "@/data/tools";
+import { getToolMetadata } from "@/utils/metadata";
 
 const tool = getToolBySlug("character-counter");
 
-export const metadata: Metadata = tool
-    ? {
-        title: tool.seoTitle,
-        description: tool.seoDescription,
-    }
-    : {
-        title: "Character Counter | ParthaTools",
-        description: "Check character counts and text limits for social media and SEO.",
-    };
+export const metadata: Metadata = getToolMetadata(
+    "character-counter",
+    "Character Counter | ParthaTools",
+    "Check character counts and text limits for social media and SEO."
+);
 
 export default function CharacterCounterPage() {
     return (

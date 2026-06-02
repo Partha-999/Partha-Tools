@@ -3,18 +3,15 @@ import Link from "next/link";
 
 import { CompressPDFTool } from "@/components/compress-pdf-tool";
 import { getToolBySlug } from "@/data/tools";
+import { getToolMetadata } from "@/utils/metadata";
 
 const tool = getToolBySlug("compress-pdf");
 
-export const metadata: Metadata = tool
-    ? {
-        title: tool.seoTitle,
-        description: tool.seoDescription,
-    }
-    : {
-        title: "Compress PDF | ParthaTools",
-        description: "Compress and optimize PDF files to reduce file size securely in your browser.",
-    };
+export const metadata: Metadata = getToolMetadata(
+    "compress-pdf",
+    "Compress PDF | ParthaTools",
+    "Compress and optimize PDF files to reduce file size securely in your browser."
+);
 
 export default function CompressPDFPage() {
     return (

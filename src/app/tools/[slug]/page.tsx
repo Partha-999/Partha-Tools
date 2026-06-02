@@ -49,8 +49,22 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
         slug === "compress-pdf"
     ) {
         return {
-            title: "Tool | ParthaTools",
+            title: "Tool",
             description: "Dedicated tool page on ParthaTools.",
+            alternates: {
+                canonical: `/tools/${slug}`,
+            },
+            openGraph: {
+                title: "Tool | ParthaTools",
+                description: "Dedicated tool page on ParthaTools.",
+                url: `https://parthatools.me/tools/${slug}`,
+                type: "website",
+            },
+            twitter: {
+                card: "summary_large_image",
+                title: "Tool | ParthaTools",
+                description: "Dedicated tool page on ParthaTools.",
+            },
         };
     }
 
@@ -58,14 +72,42 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
 
     if (!tool) {
         return {
-            title: "Tool not found | ParthaTools",
+            title: "Tool not found",
             description: "The requested tool could not be found in the ParthaTools registry.",
+            alternates: {
+                canonical: `/tools/${slug}`,
+            },
+            openGraph: {
+                title: "Tool not found | ParthaTools",
+                description: "The requested tool could not be found in the ParthaTools registry.",
+                url: `https://parthatools.me/tools/${slug}`,
+                type: "website",
+            },
+            twitter: {
+                card: "summary_large_image",
+                title: "Tool not found | ParthaTools",
+                description: "The requested tool could not be found in the ParthaTools registry.",
+            },
         };
     }
 
     return {
         title: tool.seoTitle,
         description: tool.seoDescription,
+        alternates: {
+            canonical: `/tools/${tool.slug}`,
+        },
+        openGraph: {
+            title: tool.seoTitle,
+            description: tool.seoDescription,
+            url: `https://parthatools.me/tools/${tool.slug}`,
+            type: "website",
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: tool.seoTitle,
+            description: tool.seoDescription,
+        },
     };
 }
 

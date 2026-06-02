@@ -2,19 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Base64DecoderTool } from "@/components/base64-decoder-tool";
-import { getToolBySlug } from "@/data/tools";
+import { getToolMetadata } from "@/utils/metadata";
 
-const tool = getToolBySlug("base64-decoder");
-
-export const metadata: Metadata = tool
-    ? {
-        title: tool.seoTitle,
-        description: tool.seoDescription,
-    }
-    : {
-        title: "Base64 Decoder | ParthaTools",
-        description: "Decode Base64 text to UTF-8 instantly with ParthaTools.",
-    };
+export const metadata: Metadata = getToolMetadata(
+    "base64-decoder",
+    "Base64 Decoder | ParthaTools",
+    "Decode Base64 text to UTF-8 instantly with ParthaTools."
+);
 
 export default function Base64DecoderPage() {
     return (

@@ -3,18 +3,15 @@ import Link from "next/link";
 
 import { JWTDecoderTool } from "@/components/jwt-decoder-tool";
 import { getToolBySlug } from "@/data/tools";
+import { getToolMetadata } from "@/utils/metadata";
 
 const tool = getToolBySlug("jwt-decoder");
 
-export const metadata: Metadata = tool
-    ? {
-        title: tool.seoTitle,
-        description: tool.seoDescription,
-    }
-    : {
-        title: "JWT Decoder | ParthaTools",
-        description: "Decode JSON Web Tokens (JWT) and inspect claims with clarity.",
-    };
+export const metadata: Metadata = getToolMetadata(
+    "jwt-decoder",
+    "JWT Decoder | ParthaTools",
+    "Decode JSON Web Tokens (JWT) and inspect claims with clarity."
+);
 
 export default function JWTDecoderPage() {
     return (
