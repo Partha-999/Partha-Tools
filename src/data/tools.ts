@@ -1,4 +1,4 @@
-export type ToolCategory = "Developer Tools" | "Web Tools" | "Text Tools";
+export type ToolCategory = "Developer Tools" | "Web Tools" | "Text Tools" | "PDF Tools";
 
 export type ToolIconName =
   | "json-formatter"
@@ -52,6 +52,12 @@ export const toolCategories: ToolCategoryMeta[] = [
     description: "Count, inspect, and clean text without leaving the page.",
     icon: "word-counter",
     tone: "from-violet-500/20 to-fuchsia-400/10",
+  },
+  {
+    name: "PDF Tools",
+    description: "Secure, client-side PDF document manipulation tools.",
+    icon: "merge-pdf",
+    tone: "from-red-500/20 to-rose-400/10",
   },
 ];
 
@@ -170,7 +176,7 @@ export const tools: Tool[] = [
     id: "merge-pdf",
     name: "Merge PDF",
     slug: "merge-pdf",
-    category: "Web Tools",
+    category: "PDF Tools",
     description: "Combine multiple PDF files into a single document in your preferred order.",
     icon: "merge-pdf",
     seoTitle: "Merge PDF | ParthaTools",
@@ -180,7 +186,7 @@ export const tools: Tool[] = [
     id: "compress-pdf",
     name: "Compress PDF",
     slug: "compress-pdf",
-    category: "Web Tools",
+    category: "PDF Tools",
     description: "Compress and optimize PDF files to reduce file size while maintaining readability.",
     icon: "compress-pdf",
     seoTitle: "Compress PDF | ParthaTools",
