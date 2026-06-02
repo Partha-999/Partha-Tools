@@ -73,7 +73,7 @@ export default function ContactPage() {
                             <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
                                 ParthaTools is fully open source. You can report bugs or open pull requests directly on our repository.
                             </p>
-                            <a href="https://github.com/partha-tools/partha-tools" target="_blank" rel="noopener noreferrer" className="mt-4 inline-block text-sm font-semibold text-[var(--accent)] hover:underline">
+                            <a href="https://github.com/partha-999/partha-tools" target="_blank" rel="noopener noreferrer" className="mt-4 inline-block text-sm font-semibold text-[var(--accent)] hover:underline">
                                 GitHub Repository →
                             </a>
                         </div>
