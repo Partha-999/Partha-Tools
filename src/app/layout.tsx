@@ -22,6 +22,9 @@ export const metadata: Metadata = {
   },
   description:
     "ParthaTools is a modern utility homepage for developer, PDF, image, text, and web tools.",
+  other: {
+    "google-adsense-account": "ca-pub-8506876110495262",
+  },
   alternates: {
     canonical: "/",
   },
