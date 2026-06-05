@@ -13,7 +13,10 @@ export type ToolIconName =
   | "word-counter"
   | "character-counter"
   | "merge-pdf"
-  | "compress-pdf";
+  | "compress-pdf"
+  | "jpg-to-pdf"
+  | "pdf-to-jpg"
+  | "split-pdf";
 
 
 export type Tool = {
@@ -191,6 +194,36 @@ export const tools: Tool[] = [
     icon: "compress-pdf",
     seoTitle: "Compress PDF | ParthaTools",
     seoDescription: "Compress PDF files online for free. Reduce PDF size securely in your browser.",
+  },
+  {
+    id: "jpg-to-pdf",
+    name: "JPG to PDF",
+    slug: "jpg-to-pdf",
+    category: "PDF Tools",
+    description: "Convert JPG and PNG images into PDF documents directly in your browser.",
+    icon: "jpg-to-pdf",
+    seoTitle: "JPG to PDF Converter - ParthaTools",
+    seoDescription: "Convert JPG and PNG images into PDF documents directly in your browser. Free, secure, and client-side.",
+  },
+  {
+    id: "pdf-to-jpg",
+    name: "PDF to JPG",
+    slug: "pdf-to-jpg",
+    category: "PDF Tools",
+    description: "Convert PDF pages into high-quality JPG images directly in your browser.",
+    icon: "pdf-to-jpg",
+    seoTitle: "PDF to JPG Converter - ParthaTools",
+    seoDescription: "Convert PDF pages into high-quality JPG images directly in your browser.",
+  },
+  {
+    id: "split-pdf",
+    name: "Split PDF",
+    slug: "split-pdf",
+    category: "PDF Tools",
+    description: "Extract pages or split PDF files directly in your browser with complete privacy.",
+    icon: "split-pdf",
+    seoTitle: "Split PDF Online - ParthaTools",
+    seoDescription: "Extract pages or split PDF files directly in your browser with complete privacy.",
   },
 ];
 

@@ -25,7 +25,10 @@ export function generateStaticParams() {
                 tool.slug !== "word-counter" &&
                 tool.slug !== "character-counter" &&
                 tool.slug !== "merge-pdf" &&
-                tool.slug !== "compress-pdf",
+                tool.slug !== "compress-pdf" &&
+                tool.slug !== "jpg-to-pdf" &&
+                tool.slug !== "pdf-to-jpg" &&
+                tool.slug !== "split-pdf",
         )
         .map((tool) => ({ slug: tool.slug }));
 }
@@ -46,7 +49,10 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
         slug === "word-counter" ||
         slug === "character-counter" ||
         slug === "merge-pdf" ||
-        slug === "compress-pdf"
+        slug === "compress-pdf" ||
+        slug === "jpg-to-pdf" ||
+        slug === "pdf-to-jpg" ||
+        slug === "split-pdf"
     ) {
         return {
             title: "Tool",
@@ -127,7 +133,10 @@ export default async function ToolPage({ params }: ToolPageProps) {
         slug === "word-counter" ||
         slug === "character-counter" ||
         slug === "merge-pdf" ||
-        slug === "compress-pdf"
+        slug === "compress-pdf" ||
+        slug === "jpg-to-pdf" ||
+        slug === "pdf-to-jpg" ||
+        slug === "split-pdf"
     ) {
         notFound();
     }

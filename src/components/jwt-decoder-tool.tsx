@@ -96,134 +96,182 @@ export function JWTDecoderTool() {
     const allDecodedString = decoded ? JSON.stringify({ header: decoded.header, payload: decoded.payload }, null, 2) : "";
 
     return (
-        <section className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
-            <div className="flex flex-col rounded-[2rem] border border-[var(--border)] bg-[var(--card)] p-5 shadow-[var(--shadow-soft)] backdrop-blur sm:p-6">
-                <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
-                        JWT Decoder
-                    </p>
-                    <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--foreground)]">
-                        Decode and inspect JSON Web Tokens (JWT) in real-time.
-                    </h2>
-                </div>
+        <div className="flex flex-col gap-10">
+            <section className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
+                <div className="flex flex-col rounded-[2rem] border border-[var(--border)] bg-[var(--card)] p-5 shadow-[var(--shadow-soft)] backdrop-blur sm:p-6">
+                    <div>
+                        <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
+                            JWT Decoder
+                        </p>
+                        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--foreground)]">
+                            Decode and inspect JSON Web Tokens (JWT) in real-time.
+                        </h2>
+                    </div>
 
-                <label className="mt-6 block text-sm font-semibold text-[var(--foreground)]" htmlFor="jwt-decoder-input">
-                    JWT Token (encoded)
-                </label>
-                <textarea
-                    id="jwt-decoder-input"
-                    value={input}
-                    onChange={(event) => handleInputChange(event.target.value)}
-                    placeholder="Paste your JWT (header.payload.signature) here..."
-                    className="mt-3 min-h-[16rem] w-full rounded-[1.5rem] border border-[var(--border)] bg-[var(--background)]/85 px-4 py-4 font-mono text-sm leading-7 text-[var(--foreground)] outline-none transition-colors placeholder:text-[var(--muted)] focus:border-[var(--border-strong)]"
-                    spellCheck={false}
-                />
+                    <label className="mt-6 block text-sm font-semibold text-[var(--foreground)]" htmlFor="jwt-decoder-input">
+                        JWT Token (encoded)
+                    </label>
+                    <textarea
+                        id="jwt-decoder-input"
+                        value={input}
+                        onChange={(event) => handleInputChange(event.target.value)}
+                        placeholder="Paste your JWT (header.payload.signature) here..."
+                        className="mt-3 min-h-[16rem] w-full rounded-[1.5rem] border border-[var(--border)] bg-[var(--background)]/85 px-4 py-4 font-mono text-sm leading-7 text-[var(--foreground)] outline-none transition-colors placeholder:text-[var(--muted)] focus:border-[var(--border-strong)]"
+                        spellCheck={false}
+                    />
 
-                <div className="mt-5 flex flex-wrap gap-3">
-                    <button
-                        type="button"
-                        onClick={() => decodeNow(input)}
-                        className="inline-flex h-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,var(--accent),var(--accent-strong))] px-5 text-sm font-semibold text-white shadow-[0_18px_40px_rgba(21,94,239,0.24)] transition-transform hover:-translate-y-0.5"
-                    >
-                        Decode
-                    </button>
-                    {decoded && (
+                    <div className="mt-5 flex flex-wrap gap-3">
                         <button
                             type="button"
-                            onClick={() => copyToClipboard(allDecodedString, setCopiedAll)}
-                            className="inline-flex h-12 items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--card)] px-5 text-sm font-semibold text-[var(--foreground)] transition-transform hover:-translate-y-0.5"
+                            onClick={() => decodeNow(input)}
+                            className="inline-flex h-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,var(--accent),var(--accent-strong))] px-5 text-sm font-semibold text-white shadow-[0_18px_40px_rgba(21,94,239,0.24)] transition-transform hover:-translate-y-0.5"
                         >
-                            {copiedAll ? "Copied JSON" : "Copy Decoded JSON"}
+                            Decode
                         </button>
+                        {decoded && (
+                            <button
+                                type="button"
+                                onClick={() => copyToClipboard(allDecodedString, setCopiedAll)}
+                                className="inline-flex h-12 items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--card)] px-5 text-sm font-semibold text-[var(--foreground)] transition-transform hover:-translate-y-0.5"
+                            >
+                                {copiedAll ? "Copied JSON" : "Copy Decoded JSON"}
+                            </button>
+                        )}
+                        <button
+                            type="button"
+                            onClick={handleClear}
+                            className="inline-flex h-12 items-center justify-center rounded-2xl border border-[var(--border)] bg-transparent px-5 text-sm font-semibold text-[var(--muted)] transition-transform hover:-translate-y-0.5 hover:text-[var(--foreground)]"
+                        >
+                            Clear
+                        </button>
+                    </div>
+
+                    {error ? (
+                        <div className="mt-4 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-200">
+                            {error}
+                        </div>
+                    ) : null}
+
+                    {metadata && (
+                        <div className="mt-6 flex-1 rounded-[1.5rem] border border-[var(--border)] bg-[var(--background)]/40 p-4 sm:p-5">
+                            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--muted)]">
+                                Token Claims Metadata
+                            </p>
+                            <div className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
+                                <MetaItem label="Algorithm" value={metadata.algorithm} />
+                                <MetaItem label="Token Type" value={metadata.type} />
+                                <MetaItem label="Issuer (iss)" value={metadata.issuer} />
+                                <MetaItem label="Subject (sub)" value={metadata.subject} />
+                                <MetaItem label="Audience (aud)" value={metadata.audience} />
+                                <MetaItem label="Expiration (exp)" value={metadata.expirationTime} highlight={true} />
+                                <MetaItem label="Issued At (iat)" value={metadata.issuedAt} />
+                                <MetaItem label="Not Before (nbf)" value={metadata.notBefore} />
+                            </div>
+                        </div>
                     )}
-                    <button
-                        type="button"
-                        onClick={handleClear}
-                        className="inline-flex h-12 items-center justify-center rounded-2xl border border-[var(--border)] bg-transparent px-5 text-sm font-semibold text-[var(--muted)] transition-transform hover:-translate-y-0.5 hover:text-[var(--foreground)]"
-                    >
-                        Clear
-                    </button>
                 </div>
 
-                {error ? (
-                    <div className="mt-4 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-200">
-                        {error}
-                    </div>
-                ) : null}
-
-                {metadata && (
-                    <div className="mt-6 flex-1 rounded-[1.5rem] border border-[var(--border)] bg-[var(--background)]/40 p-4 sm:p-5">
-                        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--muted)]">
-                            Token Claims Metadata
-                        </p>
-                        <div className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
-                            <MetaItem label="Algorithm" value={metadata.algorithm} />
-                            <MetaItem label="Token Type" value={metadata.type} />
-                            <MetaItem label="Issuer (iss)" value={metadata.issuer} />
-                            <MetaItem label="Subject (sub)" value={metadata.subject} />
-                            <MetaItem label="Audience (aud)" value={metadata.audience} />
-                            <MetaItem label="Expiration (exp)" value={metadata.expirationTime} highlight={true} />
-                            <MetaItem label="Issued At (iat)" value={metadata.issuedAt} />
-                            <MetaItem label="Not Before (nbf)" value={metadata.notBefore} />
+                <div className="flex flex-col gap-6">
+                    {/* Header Section */}
+                    <div className="rounded-[2rem] border border-[var(--border)] bg-[var(--card-strong)] p-5 shadow-[var(--shadow)] backdrop-blur-xl sm:p-6">
+                        <div className="flex items-center justify-between gap-4">
+                            <div>
+                                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
+                                    Part 1: Header
+                                </p>
+                                <h3 className="mt-1 text-lg font-semibold tracking-tight text-[var(--foreground)]">
+                                    Token Metadata
+                                </h3>
+                            </div>
+                            {decoded && (
+                                <button
+                                    type="button"
+                                    onClick={() => copyToClipboard(headerString, setCopiedHeader)}
+                                    className="rounded-full border border-[var(--border)] bg-[var(--card)] px-3 py-1.5 text-xs font-semibold text-[var(--muted)] hover:text-[var(--foreground)]"
+                                >
+                                    {copiedHeader ? "Copied" : "Copy Header"}
+                                </button>
+                            )}
                         </div>
+                        <pre className="mt-4 max-h-[12rem] overflow-y-auto whitespace-pre-wrap rounded-[1.5rem] border border-[var(--border)] bg-[var(--background)]/80 p-4 font-mono text-xs leading-5 text-[var(--foreground)]">
+                            <code>{headerString || "Header data will appear here."}</code>
+                        </pre>
                     </div>
-                )}
-            </div>
 
-            <div className="flex flex-col gap-6">
-                {/* Header Section */}
-                <div className="rounded-[2rem] border border-[var(--border)] bg-[var(--card-strong)] p-5 shadow-[var(--shadow)] backdrop-blur-xl sm:p-6">
-                    <div className="flex items-center justify-between gap-4">
-                        <div>
-                            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
-                                Part 1: Header
-                            </p>
-                            <h3 className="mt-1 text-lg font-semibold tracking-tight text-[var(--foreground)]">
-                                Token Metadata
-                            </h3>
+                    {/* Payload Section */}
+                    <div className="flex-1 rounded-[2rem] border border-[var(--border)] bg-[var(--card-strong)] p-5 shadow-[var(--shadow)] backdrop-blur-xl sm:p-6">
+                        <div className="flex items-center justify-between gap-4">
+                            <div>
+                                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
+                                    Part 2: Payload
+                                </p>
+                                <h3 className="mt-1 text-lg font-semibold tracking-tight text-[var(--foreground)]">
+                                    Decoded Claims
+                                </h3>
+                            </div>
+                            {decoded && (
+                                <button
+                                    type="button"
+                                    onClick={() => copyToClipboard(payloadString, setCopiedPayload)}
+                                    className="rounded-full border border-[var(--border)] bg-[var(--card)] px-3 py-1.5 text-xs font-semibold text-[var(--muted)] hover:text-[var(--foreground)]"
+                                >
+                                    {copiedPayload ? "Copied" : "Copy Payload"}
+                                </button>
+                            )}
                         </div>
-                        {decoded && (
-                            <button
-                                type="button"
-                                onClick={() => copyToClipboard(headerString, setCopiedHeader)}
-                                className="rounded-full border border-[var(--border)] bg-[var(--card)] px-3 py-1.5 text-xs font-semibold text-[var(--muted)] hover:text-[var(--foreground)]"
-                            >
-                                {copiedHeader ? "Copied" : "Copy Header"}
-                            </button>
-                        )}
+                        <pre className="mt-4 min-h-[16rem] overflow-y-auto whitespace-pre-wrap rounded-[1.5rem] border border-[var(--border)] bg-[var(--background)]/80 p-4 font-mono text-xs leading-5 text-[var(--foreground)]">
+                            <code>{payloadString || "Payload claims will appear here."}</code>
+                        </pre>
                     </div>
-                    <pre className="mt-4 max-h-[12rem] overflow-y-auto whitespace-pre-wrap rounded-[1.5rem] border border-[var(--border)] bg-[var(--background)]/80 p-4 font-mono text-xs leading-5 text-[var(--foreground)]">
-                        <code>{headerString || "Header data will appear here."}</code>
-                    </pre>
+                </div>
+            </section>
+
+            <hr className="border-[var(--border)]" />
+
+            <article className="prose prose-gray dark:prose-invert max-w-none space-y-6">
+                <div>
+                    <h2 className="text-2xl font-bold tracking-tight text-[var(--foreground)]">What is JWT Decoder?</h2>
+                    <p className="mt-2 text-base leading-7 text-[var(--muted)]">
+                        A JSON Web Token (JWT) Decoder parses three-part tokens (Header, Payload, and Signature) encoded using base64url. This tool flattens the token segments and presents them as formatted JSON objects, allowing developers to inspect credentials, algorithm definitions, and custom claims instantly.
+                    </p>
                 </div>
 
-                {/* Payload Section */}
-                <div className="flex-1 rounded-[2rem] border border-[var(--border)] bg-[var(--card-strong)] p-5 shadow-[var(--shadow)] backdrop-blur-xl sm:p-6">
-                    <div className="flex items-center justify-between gap-4">
-                        <div>
-                            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
-                                Part 2: Payload
-                            </p>
-                            <h3 className="mt-1 text-lg font-semibold tracking-tight text-[var(--foreground)]">
-                                Decoded Claims
-                            </h3>
-                        </div>
-                        {decoded && (
-                            <button
-                                type="button"
-                                onClick={() => copyToClipboard(payloadString, setCopiedPayload)}
-                                className="rounded-full border border-[var(--border)] bg-[var(--card)] px-3 py-1.5 text-xs font-semibold text-[var(--muted)] hover:text-[var(--foreground)]"
-                            >
-                                {copiedPayload ? "Copied" : "Copy Payload"}
-                            </button>
-                        )}
-                    </div>
-                    <pre className="mt-4 min-h-[16rem] overflow-y-auto whitespace-pre-wrap rounded-[1.5rem] border border-[var(--border)] bg-[var(--background)]/80 p-4 font-mono text-xs leading-5 text-[var(--foreground)]">
-                        <code>{payloadString || "Payload claims will appear here."}</code>
-                    </pre>
+                <div>
+                    <h2 className="text-2xl font-bold tracking-tight text-[var(--foreground)]">How to Use JWT Decoder</h2>
+                    <ol className="mt-2 list-decimal list-inside space-y-2 text-base leading-7 text-[var(--muted)]">
+                        <li>Paste your encoded JSON Web Token (a string containing two dot separators) into the token input box.</li>
+                        <li>The tool immediately triggers decoding without requiring form submissions.</li>
+                        <li>Inspect the **Header** (Part 1) for metadata and the **Payload** (Part 2) for claim variables.</li>
+                        <li>Examine the claims metadata card highlighting Expiration (exp), Issued At (iat), and Issuer (iss) details.</li>
+                    </ol>
                 </div>
-            </div>
-        </section>
+
+                <div className="grid gap-6 sm:grid-cols-2">
+                    <div>
+                        <h3 className="text-xl font-bold text-[var(--foreground)]">Benefits of JWT Decoder</h3>
+                        <ul className="mt-2 list-disc list-inside space-y-2 text-sm leading-6 text-[var(--muted)]">
+                            <li><strong>100% Offline</strong>: Decoding is performed completely inside browser scripting contexts; your tokens never hit any network endpoints.</li>
+                            <li><strong>Readable Claims</strong>: Converts timestamps to readable date and time formats automatically.</li>
+                            <li><strong>Segment Copying</strong>: Quick actions copy individual segments (Header or Payload) rather than the whole token structure.</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 className="text-xl font-bold text-[var(--foreground)]">Frequently Asked Questions (FAQ)</h3>
+                        <div className="mt-2 space-y-3 text-sm leading-6 text-[var(--muted)]">
+                            <div>
+                                <p className="font-semibold text-[var(--foreground)]">Does this tool verify the signature?</p>
+                                <p>No. This tool operates on client-side decoding only and does not verify token authenticity against cryptographic public/private keys.</p>
+                            </div>
+                            <div>
+                                <p className="font-semibold text-[var(--foreground)]">Is it safe to paste credentials here?</p>
+                                <p>Yes. The decoding scripts run isolated in your browser tab. No external telemetry or trackers are configured to monitor payloads.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
     );
 }
 

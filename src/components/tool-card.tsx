@@ -18,6 +18,9 @@ const toolIconMap: Record<ToolIconName, string> = {
     "character-counter": "M7 7h10M7 12h10M7 17h6",
     "merge-pdf": "M4 18h10a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z M22 8v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2",
     "compress-pdf": "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M12 18v-4M9 15l3 3 3-3 M12 10v4M15 13l-3-3-3 3",
+    "jpg-to-pdf": "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z M14 2v4a1 1 0 0 0 1 1h4 M9 15a1 1 0 1 0 0-2 1 1 0 0 0 0 2z M7 18l2.5-2.5 2 2 4-4 2.5 2.5",
+    "pdf-to-jpg": "M14 2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4M14 2v6h6 M22 15v5a2 2 0 0 1-2 2h-5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2z",
+    "split-pdf": "M14 2H6a2 2 0 0 0-2 2v7h16V8z M20 13H4v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2z M2 11h20",
 };
 
 export function ToolCard({ tool }: { tool: Tool }) {

@@ -2,19 +2,20 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import type { jsPDF as jsPDFType } from "jspdf";
 
-interface PDFFileItem {
+interface ImageFileItem {
     id: string;
     file: File;
     name: string;
     size: number;
-    pagesCount: number | null;
+    previewUrl: string;
     error: string | null;
 }
 
-export function MergePDFTool() {
-    const [files, setFiles] = useState<PDFFileItem[]>([]);
-    const [isMerging, setIsMerging] = useState(false);
+export function JPGToPDFTool() {
+    const [files, setFiles] = useState<ImageFileItem[]>([]);
+    const [isConverting, setIsConverting] = useState(false);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
@@ -22,35 +23,28 @@ export function MergePDFTool() {
         setError("");
         setSuccess("");
 
-        const newItems = await Promise.all(
-            acceptedFiles.map(async (file) => {
-                const id = Math.random().toString(36).substring(7);
-                let pagesCount: number | null = null;
-                let errorMsg: string | null = null;
+        const newItems = acceptedFiles.map((file) => {
+            const id = Math.random().toString(36).substring(7);
+            let errorMsg: string | null = null;
 
-                if (file.type !== "application/pdf" && !file.name.endsWith(".pdf")) {
-                    errorMsg = "Only PDF files are supported.";
-                } else {
-                    try {
-                        const arrayBuffer = await file.arrayBuffer();
-                        const { PDFDocument } = await import("pdf-lib");
-                        const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
-                        pagesCount = pdfDoc.getPageCount();
-                    } catch {
-                        errorMsg = "Failed to parse PDF (encrypted or corrupted).";
-                    }
-                }
+            const isImage = file.type.startsWith("image/") || 
+                            file.name.endsWith(".jpg") || 
+                            file.name.endsWith(".jpeg") || 
+                            file.name.endsWith(".png");
 
-                return {
-                    id,
-                    file,
-                    name: file.name,
-                    size: file.size,
-                    pagesCount,
-                    error: errorMsg,
-                };
-            })
-        );
+            if (!isImage) {
+                errorMsg = "Only JPG, JPEG, and PNG images are supported.";
+            }
+
+            return {
+                id,
+                file,
+                name: file.name,
+                size: file.size,
+                previewUrl: isImage ? URL.createObjectURL(file) : "",
+                error: errorMsg,
+            };
+        });
 
         setFiles((prev) => [...prev, ...newItems]);
     }, []);
@@ -58,13 +52,20 @@ export function MergePDFTool() {
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         accept: {
-            "application/pdf": [".pdf"],
+            "image/jpeg": [".jpg", ".jpeg"],
+            "image/png": [".png"],
         },
         multiple: true,
     });
 
     const removeFile = (id: string) => {
-        setFiles((prev) => prev.filter((f) => f.id !== id));
+        setFiles((prev) => {
+            const item = prev.find((f) => f.id === id);
+            if (item && item.previewUrl) {
+                URL.revokeObjectURL(item.previewUrl);
+            }
+            return prev.filter((f) => f.id !== id);
+        });
         setError("");
         setSuccess("");
     };
@@ -87,85 +88,117 @@ export function MergePDFTool() {
     };
 
     const clearAll = () => {
+        files.forEach((f) => {
+            if (f.previewUrl) URL.revokeObjectURL(f.previewUrl);
+        });
         setFiles([]);
         setError("");
         setSuccess("");
     };
 
     const stats = useMemo(() => {
-        let totalPages = 0;
         let totalSize = 0;
         let validCount = 0;
 
         files.forEach((f) => {
             totalSize += f.size;
-            if (!f.error && f.pagesCount !== null) {
-                totalPages += f.pagesCount;
+            if (!f.error) {
                 validCount += 1;
             }
         });
 
         return {
-            totalPages,
             totalSize: formatBytes(totalSize),
             validCount,
         };
     }, [files]);
 
-    const handleMerge = async () => {
-        const validFiles = files.filter((f) => !f.error && f.pagesCount !== null);
+    const handleConvert = async () => {
+        const validFiles = files.filter((f) => !f.error);
 
-        if (validFiles.length < 2) {
-            setError("Please upload at least two valid PDF files to merge.");
+        if (validFiles.length === 0) {
+            setError("Please upload at least one valid image to convert.");
             return;
         }
 
-        setIsMerging(true);
+        setIsConverting(true);
         setError("");
         setSuccess("");
 
         try {
-            const { PDFDocument } = await import("pdf-lib");
-            const mergedPdf = await PDFDocument.create();
+            const { jsPDF } = await import("jspdf");
+            let pdf: jsPDFType | null = null;
 
-            for (const item of validFiles) {
-                const arrayBuffer = await item.file.arrayBuffer();
-                const srcPdf = await PDFDocument.load(arrayBuffer);
-                const copiedPages = await mergedPdf.copyPages(srcPdf, srcPdf.getPageIndices());
-                copiedPages.forEach((page) => mergedPdf.addPage(page));
+            const loadImage = (url: string): Promise<HTMLImageElement> => {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.src = url;
+                    img.onload = () => resolve(img);
+                    img.onerror = () => reject(new Error("Failed to load image"));
+                });
+            };
+
+            const fileToDataURL = (file: File): Promise<string> => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result as string);
+                    reader.onerror = () => reject(new Error("Failed to read file"));
+                    reader.readAsDataURL(file);
+                });
+            };
+
+            for (let i = 0; i < validFiles.length; i++) {
+                const item = validFiles[i];
+                const dataUrl = await fileToDataURL(item.file);
+                const img = await loadImage(dataUrl);
+
+                // Use exact dimensions of the image to prevent scaling losses
+                const width = img.naturalWidth || img.width;
+                const height = img.naturalHeight || img.height;
+                const orientation = width > height ? "l" : "p";
+
+                if (i === 0) {
+                    pdf = new jsPDF({
+                        orientation,
+                        unit: "px",
+                        format: [width, height],
+                        hotfixes: ["px_scaling"],
+                    });
+                } else if (pdf) {
+                    pdf.addPage([width, height], orientation);
+                }
+
+                if (pdf) {
+                    const formatType = item.file.type === "image/png" ? "PNG" : "JPEG";
+                    pdf.addImage(dataUrl, formatType, 0, 0, width, height);
+                }
             }
 
-            const mergedPdfBytes = await mergedPdf.save();
-            const blob = new Blob([mergedPdfBytes as BlobPart], { type: "application/pdf" });
-            const url = URL.createObjectURL(blob);
-
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = "merged-document.pdf";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-
-            setSuccess("PDF files successfully combined and downloaded!");
-        } catch {
-            setError("An error occurred while merging the PDF files. Please verify that none of the documents are encrypted or password-protected.");
+            if (pdf) {
+                pdf.save("converted-images.pdf");
+                setSuccess("Images successfully converted into a PDF document!");
+            } else {
+                setError("No PDF was created.");
+            }
+        } catch (err: unknown) {
+            const errMsg = err instanceof Error ? err.message : "An error occurred while converting the images. Please verify that your files are valid JPEGs or PNGs.";
+            setError(errMsg);
         } finally {
-            setIsMerging(false);
+            setIsConverting(false);
         }
     };
 
     return (
-        <div className="flex flex-col gap-10">
-            <section className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <section className="flex flex-col gap-10">
+            <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
                 {/* Upload Area & List */}
                 <div className="rounded-[2rem] border border-[var(--border)] bg-[var(--card)] p-5 shadow-[var(--shadow-soft)] backdrop-blur sm:p-6">
                     <div>
                         <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
-                            Merge PDF
+                            JPG to PDF
                         </p>
                         <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--foreground)]">
-                            Combine multiple PDF documents into a single file locally.
+                            Convert JPG and PNG images into a PDF document.
                         </h2>
                     </div>
 
@@ -182,44 +215,51 @@ export function MergePDFTool() {
                             <UploadIcon />
                         </div>
                         <p className="mt-4 text-base font-semibold text-[var(--foreground)]">
-                            {isDragActive ? "Drop PDF files here..." : "Drag & drop PDF files here, or click to browse"}
+                            {isDragActive ? "Drop image files here..." : "Drag & drop JPG/PNG files here, or click to browse"}
                         </p>
-                        <p className="mt-1 text-xs text-[var(--muted)]">Supports multiple PDF uploads. Processed entirely in browser.</p>
+                        <p className="mt-1 text-xs text-[var(--muted)]">Supports JPEG, JPG, and PNG formats. Processed locally.</p>
                     </div>
 
                     {/* Files List */}
                     {files.length > 0 && (
                         <div className="mt-6 space-y-3">
                             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--muted)]">
-                                Uploaded PDF Files ({files.length})
+                                Uploaded Images ({files.length})
                             </p>
                             <div className="space-y-2.5">
                                 {files.map((item, index) => (
                                     <div
                                         key={item.id}
-                                        className={`flex items-center justify-between gap-4 rounded-2xl border p-3.5 transition-all ${item.error
+                                        className={`flex items-center justify-between gap-4 rounded-2xl border p-3 transition-all ${item.error
                                                 ? "border-red-500/20 bg-red-500/5"
                                                 : "border-[var(--border)] bg-[var(--background)]/60"
                                             }`}
                                     >
-                                        {/* Info Panel */}
+                                        {/* Info & Thumbnail */}
                                         <div className="flex flex-1 items-center gap-3.5 min-w-0">
-                                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[var(--card)] font-mono text-xs font-bold text-[var(--muted)] border border-[var(--border)]">
-                                                {index + 1}
-                                            </div>
+                                            {/* Thumbnail */}
+                                            {item.previewUrl && !item.error ? (
+                                                <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)]">
+                                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                    <img
+                                                        src={item.previewUrl}
+                                                        alt={item.name}
+                                                        className="h-full w-full object-cover"
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--card)] border border-[var(--border)] text-[var(--muted)]">
+                                                    <ImageIcon />
+                                                </div>
+                                            )}
+
                                             <div className="min-w-0">
                                                 <p className="truncate text-sm font-semibold text-[var(--foreground)]" title={item.name}>
                                                     {item.name}
                                                 </p>
-                                                <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-[var(--muted)]">
-                                                    <span>{formatBytes(item.size)}</span>
-                                                    {item.pagesCount !== null && (
-                                                        <>
-                                                            <span className="h-1 w-1 rounded-full bg-[var(--border)]" />
-                                                            <span>{item.pagesCount} {item.pagesCount === 1 ? "page" : "pages"}</span>
-                                                        </>
-                                                    )}
-                                                </div>
+                                                <p className="mt-1 text-xs text-[var(--muted)]">
+                                                    {formatBytes(item.size)}
+                                                </p>
                                                 {item.error && (
                                                     <p className="mt-1 text-xs font-semibold text-red-500">{item.error}</p>
                                                 )}
@@ -265,36 +305,36 @@ export function MergePDFTool() {
                     )}
                 </div>
 
-                {/* Merge Actions & Stats */}
+                {/* Conversion Summary & Details */}
                 <div className="flex flex-col gap-6">
                     <div className="rounded-[2rem] border border-[var(--border)] bg-[var(--card-strong)] p-5 shadow-[var(--shadow)] backdrop-blur-xl sm:p-6">
                         <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
-                            Merge Summary
+                            Conversion Summary
                         </p>
                         <h3 className="mt-2 text-xl font-semibold tracking-tight text-[var(--foreground)]">
-                            Merge Statistics
+                            File Information
                         </h3>
 
                         <div className="mt-6 grid grid-cols-2 gap-4">
                             <StatCard label="Total Files" value={files.length} />
-                            <StatCard label="Valid Files" value={stats.validCount} />
-                            <StatCard label="Total Pages" value={stats.validCount > 0 ? stats.totalPages : 0} />
+                            <StatCard label="Valid Images" value={stats.validCount} />
                             <StatCard label="Total Size" value={stats.totalSize} />
+                            <StatCard label="Export Format" value="PDF Document" />
                         </div>
 
                         <div className="mt-6 flex flex-col gap-3">
                             <button
                                 type="button"
-                                onClick={handleMerge}
-                                disabled={isMerging || stats.validCount < 2}
+                                onClick={handleConvert}
+                                disabled={isConverting || stats.validCount === 0}
                                 className="inline-flex h-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,var(--accent),var(--accent-strong))] px-5 text-sm font-semibold text-white shadow-[0_18px_40px_rgba(21,94,239,0.24)] transition-transform hover:-translate-y-0.5 disabled:opacity-50 disabled:pointer-events-none disabled:translate-y-0"
                             >
-                                {isMerging ? (
+                                {isConverting ? (
                                     <span className="flex items-center gap-2">
-                                        <SpinnerIcon /> Merging PDFs...
+                                        <SpinnerIcon /> Converting...
                                     </span>
                                 ) : (
-                                    "Merge PDFs & Download"
+                                    "Convert to PDF & Download"
                                 )}
                             </button>
                             {files.length > 0 && (
@@ -326,42 +366,43 @@ export function MergePDFTool() {
                             Privacy First
                         </p>
                         <h4 className="mt-2 text-base font-semibold text-[var(--foreground)]">
-                            100% Client-Side Merging
+                            100% Secure Local Conversions
                         </h4>
                         <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
-                            All PDF files are loaded, parsed, and combined locally in your web browser. None of your document data is uploaded or transmitted to any server.
+                            All processing happens locally in your web browser. Your images are never sent to external servers, protecting your security and private info.
                         </p>
                     </div>
                 </div>
-            </section>
+            </div>
 
+            {/* Informational Content Section */}
             <hr className="border-[var(--border)]" />
-
             <article className="prose prose-gray dark:prose-invert max-w-none space-y-6">
                 <div>
-                    <h2 className="text-2xl font-bold tracking-tight text-[var(--foreground)]">What is Merge PDF?</h2>
+                    <h2 className="text-2xl font-bold tracking-tight text-[var(--foreground)]">What is JPG to PDF?</h2>
                     <p className="mt-2 text-base leading-7 text-[var(--muted)]">
-                        Merge PDF is a web utility that compiles multiple individual Portable Document Format (PDF) files into a single, unified PDF document. It resolves document fragmentation issues and lets you combine chapters, reports, or sheets into a single export.
+                        JPG to PDF is a browser-based utility that lets you compile one or more JPG, JPEG, or PNG images into a single PDF document. By utilizing standard client-side PDF technologies, this tool converts your images immediately in the browser without uploading them to external servers.
                     </p>
                 </div>
 
                 <div>
-                    <h2 className="text-2xl font-bold tracking-tight text-[var(--foreground)]">How to merge PDF files</h2>
+                    <h2 className="text-2xl font-bold tracking-tight text-[var(--foreground)]">How to Use JPG to PDF</h2>
                     <ol className="mt-2 list-decimal list-inside space-y-2 text-base leading-7 text-[var(--muted)]">
-                        <li>Click the upload card or drag-and-drop multiple PDF files into the drag area.</li>
-                        <li>Adjust the file list order by clicking the Up and Down arrow buttons.</li>
-                        <li>Remove any unwanted documents by clicking the red trash delete button.</li>
-                        <li>Click <strong>Merge PDFs & Download</strong> to combine and download the combined file.</li>
+                        <li>Drag and drop your images into the designated upload area or click to browse files.</li>
+                        <li>Review your uploaded images. Use the Up and Down buttons to adjust the sequence of pages.</li>
+                        <li>Click <strong>Convert to PDF & Download</strong> to initialize the script and compile the pages.</li>
+                        <li>The compiled PDF file will automatically begin downloading to your device.</li>
                     </ol>
                 </div>
 
                 <div className="grid gap-6 sm:grid-cols-2">
                     <div>
-                        <h3 className="text-xl font-bold text-[var(--foreground)]">Benefits of Merge PDF</h3>
+                        <h3 className="text-xl font-bold text-[var(--foreground)]">Benefits</h3>
                         <ul className="mt-2 list-disc list-inside space-y-2 text-sm leading-6 text-[var(--muted)]">
-                            <li><strong>High Performance</strong>: Leverages the powerful open-source `pdf-lib` script library to parse structure streams and splice pages locally inside the browser.</li>
-                            <li><strong>Lossless Splicing</strong>: Combines your pages without re-rendering them, preserving vector fonts, link embeds, and original image resolutions.</li>
-                            <li><strong>Browser Sandboxed Memory</strong>: Ensures absolute document privacy. None of your invoices, contracts, or tax documents are ever uploaded to any backend service.</li>
+                            <li><strong>Local Processing</strong>: Complete confidentiality with offline conversions.</li>
+                            <li><strong>Image Preservation</strong>: Generates PDF pages matching the exact dimensions and scale of the original images.</li>
+                            <li><strong>Zero Sign-ups</strong>: Instant usage with no monthly subscriptions or auth flows.</li>
+                            <li><strong>Multi-Format</strong>: Seamless support for both JPG/JPEG and PNG image types.</li>
                         </ul>
                     </div>
 
@@ -369,18 +410,18 @@ export function MergePDFTool() {
                         <h3 className="text-xl font-bold text-[var(--foreground)]">Frequently Asked Questions (FAQ)</h3>
                         <div className="mt-2 space-y-3 text-sm leading-6 text-[var(--muted)]">
                             <div>
-                                <p className="font-semibold text-[var(--foreground)]">Can I merge password-protected PDF files?</p>
-                                <p>No. Encrypted or password-secured PDF documents prevent our browser script libraries from accessing pages. You must decrypt and unlock them before uploading.</p>
+                                <p className="font-semibold text-[var(--foreground)]">Is there a file size limit?</p>
+                                <p>No arbitrary limit is enforced by our tool, but performance depends on your device&apos;s available browser memory.</p>
                             </div>
                             <div>
-                                <p className="font-semibold text-[var(--foreground)]">Is there a file size limit for merging?</p>
-                                <p>There is no strict software limit on file sizes. However, because the entire merging process takes place within your browser&apos;s local sandbox, it depends on your machine&apos;s physical memory (RAM).</p>
+                                <p className="font-semibold text-[var(--foreground)]">Can I convert PNG files too?</p>
+                                <p>Yes! PNG and JPEG images are both supported and can be mixed together in the same PDF compilation.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </article>
-        </div>
+        </section>
     );
 }
 
@@ -420,6 +461,24 @@ function UploadIcon() {
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
             <polyline points="17 8 12 3 7 8" />
             <line x1="12" y1="3" x2="12" y2="15" />
+        </svg>
+    );
+}
+
+function ImageIcon() {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-5 w-5"
+        >
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <polyline points="21 15 16 10 5 21" />
         </svg>
     );
 }

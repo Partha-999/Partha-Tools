@@ -221,42 +221,54 @@ export function CompressPDFTool() {
                                 <button
                                     type="button"
                                     onClick={() => setCompressionLevel("low")}
-                                    className={`flex flex-col text-left rounded-2xl border p-4 transition-all ${
+                                    className={`flex flex-col text-left rounded-2xl border p-4 transition-all min-h-[7rem] cursor-pointer ${
                                         compressionLevel === "low"
-                                            ? "border-[var(--accent)] bg-[var(--accent-soft)]/20"
-                                            : "border-[var(--border)] bg-[var(--background)]/50 hover:border-[var(--border-strong)]"
+                                            ? "border-slate-900 bg-slate-900 text-white dark:border-slate-100 dark:bg-slate-100 dark:text-slate-950 shadow-[var(--shadow-soft)]"
+                                            : "border-[var(--border)] bg-[var(--background)]/50 text-[var(--foreground)] hover:border-[var(--border-strong)]"
                                     }`}
                                 >
-                                    <span className="text-sm font-semibold text-[var(--foreground)]">Low</span>
-                                    <span className="mt-1 text-xs text-[var(--muted)]">Optimizes structure. Preserves all details.</span>
+                                    <span className={`text-sm font-semibold ${
+                                        compressionLevel === "low" ? "text-white dark:text-slate-950" : "text-[var(--foreground)]"
+                                    }`}>Low</span>
+                                    <span className={`mt-1 text-xs ${
+                                        compressionLevel === "low" ? "text-slate-300 dark:text-slate-600" : "text-[var(--muted)]"
+                                    }`}>Optimizes structure. Preserves all details.</span>
                                 </button>
 
                                 {/* Medium */}
                                 <button
                                     type="button"
                                     onClick={() => setCompressionLevel("medium")}
-                                    className={`flex flex-col text-left rounded-2xl border p-4 transition-all ${
+                                    className={`flex flex-col text-left rounded-2xl border p-4 transition-all min-h-[7rem] cursor-pointer ${
                                         compressionLevel === "medium"
-                                            ? "border-[var(--accent)] bg-[var(--accent-soft)]/20"
-                                            : "border-[var(--border)] bg-[var(--background)]/50 hover:border-[var(--border-strong)]"
+                                            ? "border-slate-900 bg-slate-900 text-white dark:border-slate-100 dark:bg-slate-100 dark:text-slate-950 shadow-[var(--shadow-soft)]"
+                                            : "border-[var(--border)] bg-[var(--background)]/50 text-[var(--foreground)] hover:border-[var(--border-strong)]"
                                     }`}
                                 >
-                                    <span className="text-sm font-semibold text-[var(--foreground)]">Medium</span>
-                                    <span className="mt-1 text-xs text-[var(--muted)]">Cleans unused data. Recommended.</span>
+                                    <span className={`text-sm font-semibold ${
+                                        compressionLevel === "medium" ? "text-white dark:text-slate-950" : "text-[var(--foreground)]"
+                                    }`}>Medium</span>
+                                    <span className={`mt-1 text-xs ${
+                                        compressionLevel === "medium" ? "text-slate-300 dark:text-slate-600" : "text-[var(--muted)]"
+                                    }`}>Cleans unused data. Recommended.</span>
                                 </button>
 
                                 {/* High */}
                                 <button
                                     type="button"
                                     onClick={() => setCompressionLevel("high")}
-                                    className={`flex flex-col text-left rounded-2xl border p-4 transition-all ${
+                                    className={`flex flex-col text-left rounded-2xl border p-4 transition-all min-h-[7rem] cursor-pointer ${
                                         compressionLevel === "high"
-                                            ? "border-[var(--accent)] bg-[var(--accent-soft)]/20"
-                                            : "border-[var(--border)] bg-[var(--background)]/50 hover:border-[var(--border-strong)]"
+                                            ? "border-slate-900 bg-slate-900 text-white dark:border-slate-100 dark:bg-slate-100 dark:text-slate-950 shadow-[var(--shadow-soft)]"
+                                            : "border-[var(--border)] bg-[var(--background)]/50 text-[var(--foreground)] hover:border-[var(--border-strong)]"
                                     }`}
                                 >
-                                    <span className="text-sm font-semibold text-[var(--foreground)]">High</span>
-                                    <span className="mt-1 text-xs text-[var(--muted)]">Aggressive cleanup. Strips links & comments.</span>
+                                    <span className={`text-sm font-semibold ${
+                                        compressionLevel === "high" ? "text-white dark:text-slate-950" : "text-[var(--foreground)]"
+                                    }`}>High</span>
+                                    <span className={`mt-1 text-xs ${
+                                        compressionLevel === "high" ? "text-slate-300 dark:text-slate-600" : "text-[var(--muted)]"
+                                    }`}>Aggressive cleanup. Strips links & comments.</span>
                                 </button>
                             </div>
                         </div>

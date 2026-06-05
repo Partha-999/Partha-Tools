@@ -132,108 +132,156 @@ export function PasswordGeneratorTool() {
                 : "bg-red-500 text-white";
 
     return (
-        <section className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="rounded-[2rem] border border-[var(--border)] bg-[var(--card)] p-5 shadow-[var(--shadow-soft)] backdrop-blur sm:p-6">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                    <div>
-                        <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
-                            Password Generator
+        <div className="flex flex-col gap-10">
+            <section className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+                <div className="rounded-[2rem] border border-[var(--border)] bg-[var(--card)] p-5 shadow-[var(--shadow-soft)] backdrop-blur sm:p-6">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                        <div>
+                            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
+                                Password Generator
+                            </p>
+                            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--foreground)]">
+                                Generate secure passwords with custom character rules.
+                            </h2>
+                        </div>
+                        <p className="text-sm text-[var(--muted)]">Length: {length}</p>
+                    </div>
+
+                    <div className="mt-6">
+                        <label className="text-sm font-semibold text-[var(--foreground)]" htmlFor="password-length">
+                            Password length slider (4-64)
+                        </label>
+                        <input
+                            id="password-length"
+                            type="range"
+                            min={4}
+                            max={64}
+                            value={length}
+                            onChange={(event) => setLength(Number(event.target.value))}
+                            className="mt-3 h-2 w-full cursor-pointer appearance-none rounded-lg bg-[var(--accent-soft)]"
+                        />
+                        <div className="mt-2 flex items-center justify-between text-xs font-semibold text-[var(--muted)]">
+                            <span>4</span>
+                            <span>64</span>
+                        </div>
+                    </div>
+
+                    <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                        <OptionToggle label="Include uppercase" checked={includeUppercase} onChange={setIncludeUppercase} />
+                        <OptionToggle label="Include lowercase" checked={includeLowercase} onChange={setIncludeLowercase} />
+                        <OptionToggle label="Include numbers" checked={includeNumbers} onChange={setIncludeNumbers} />
+                        <OptionToggle label="Include symbols" checked={includeSymbols} onChange={setIncludeSymbols} />
+                    </div>
+
+                    <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                        <button
+                            type="button"
+                            onClick={generatePassword}
+                            className="inline-flex h-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,var(--accent),var(--accent-strong))] px-5 text-sm font-semibold text-white shadow-[0_18px_40px_rgba(21,94,239,0.24)] transition-transform hover:-translate-y-0.5"
+                        >
+                            Generate
+                        </button>
+                        <button
+                            type="button"
+                            onClick={generatePassword}
+                            className="inline-flex h-12 items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--background)] px-5 text-sm font-semibold text-[var(--foreground)] transition-transform hover:-translate-y-0.5"
+                        >
+                            Regenerate
+                        </button>
+                        <button
+                            type="button"
+                            onClick={copyPassword}
+                            className="inline-flex h-12 items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--card)] px-5 text-sm font-semibold text-[var(--foreground)] transition-transform hover:-translate-y-0.5"
+                        >
+                            {copied ? "Copied" : "Copy"}
+                        </button>
+                    </div>
+
+                    {error ? (
+                        <div className="mt-4 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-200">
+                            {error}
+                        </div>
+                    ) : null}
+                </div>
+
+                <div className="rounded-[2rem] border border-[var(--border)] bg-[var(--card-strong)] p-5 shadow-[var(--shadow)] backdrop-blur-xl sm:p-6">
+                    <div className="flex items-center justify-between gap-4">
+                        <div>
+                            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
+                                Generated password
+                            </p>
+                            <h3 className="mt-2 text-xl font-semibold tracking-tight text-[var(--foreground)]">
+                                Live output
+                            </h3>
+                        </div>
+                        <span className={`rounded-full px-4 py-2 text-xs font-semibold ${strengthToneClass}`}>
+                            {strength.label}
+                        </span>
+                    </div>
+
+                    <div className="mt-5 rounded-[1.5rem] border border-[var(--border)] bg-[var(--background)]/80 p-5">
+                        <p className="break-all font-mono text-base leading-8 text-[var(--foreground)]">
+                            {password || "Select options and generate a password."}
                         </p>
-                        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--foreground)]">
-                            Generate secure passwords with custom character rules.
-                        </h2>
                     </div>
-                    <p className="text-sm text-[var(--muted)]">Length: {length}</p>
-                </div>
 
-                <div className="mt-6">
-                    <label className="text-sm font-semibold text-[var(--foreground)]" htmlFor="password-length">
-                        Password length slider (4-64)
-                    </label>
-                    <input
-                        id="password-length"
-                        type="range"
-                        min={4}
-                        max={64}
-                        value={length}
-                        onChange={(event) => setLength(Number(event.target.value))}
-                        className="mt-3 h-2 w-full cursor-pointer appearance-none rounded-lg bg-[var(--accent-soft)]"
-                    />
-                    <div className="mt-2 flex items-center justify-between text-xs font-semibold text-[var(--muted)]">
-                        <span>4</span>
-                        <span>64</span>
+                    <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                        <StatCard label="Length" value={String(length)} />
+                        <StatCard label="Enabled sets" value={String(selectedGroupsCount)} />
+                    </div>
+
+                    <div className="mt-5 rounded-[1.5rem] border border-[var(--border)] bg-[var(--background)]/60 p-4 text-sm leading-7 text-[var(--muted)]">
+                        Tip: use at least three character groups and a length of 14+ for stronger passwords.
                     </div>
                 </div>
+            </section>
 
-                <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                    <OptionToggle label="Include uppercase" checked={includeUppercase} onChange={setIncludeUppercase} />
-                    <OptionToggle label="Include lowercase" checked={includeLowercase} onChange={setIncludeLowercase} />
-                    <OptionToggle label="Include numbers" checked={includeNumbers} onChange={setIncludeNumbers} />
-                    <OptionToggle label="Include symbols" checked={includeSymbols} onChange={setIncludeSymbols} />
-                </div>
+            <hr className="border-[var(--border)]" />
 
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                    <button
-                        type="button"
-                        onClick={generatePassword}
-                        className="inline-flex h-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,var(--accent),var(--accent-strong))] px-5 text-sm font-semibold text-white shadow-[0_18px_40px_rgba(21,94,239,0.24)] transition-transform hover:-translate-y-0.5"
-                    >
-                        Generate
-                    </button>
-                    <button
-                        type="button"
-                        onClick={generatePassword}
-                        className="inline-flex h-12 items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--background)] px-5 text-sm font-semibold text-[var(--foreground)] transition-transform hover:-translate-y-0.5"
-                    >
-                        Regenerate
-                    </button>
-                    <button
-                        type="button"
-                        onClick={copyPassword}
-                        className="inline-flex h-12 items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--card)] px-5 text-sm font-semibold text-[var(--foreground)] transition-transform hover:-translate-y-0.5"
-                    >
-                        {copied ? "Copied" : "Copy"}
-                    </button>
-                </div>
-
-                {error ? (
-                    <div className="mt-4 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-200">
-                        {error}
-                    </div>
-                ) : null}
-            </div>
-
-            <div className="rounded-[2rem] border border-[var(--border)] bg-[var(--card-strong)] p-5 shadow-[var(--shadow)] backdrop-blur-xl sm:p-6">
-                <div className="flex items-center justify-between gap-4">
-                    <div>
-                        <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--accent)]">
-                            Generated password
-                        </p>
-                        <h3 className="mt-2 text-xl font-semibold tracking-tight text-[var(--foreground)]">
-                            Live output
-                        </h3>
-                    </div>
-                    <span className={`rounded-full px-4 py-2 text-xs font-semibold ${strengthToneClass}`}>
-                        {strength.label}
-                    </span>
-                </div>
-
-                <div className="mt-5 rounded-[1.5rem] border border-[var(--border)] bg-[var(--background)]/80 p-5">
-                    <p className="break-all font-mono text-base leading-8 text-[var(--foreground)]">
-                        {password || "Select options and generate a password."}
+            <article className="prose prose-gray dark:prose-invert max-w-none space-y-6">
+                <div>
+                    <h2 className="text-2xl font-bold tracking-tight text-[var(--foreground)]">What is a Password Generator?</h2>
+                    <p className="mt-2 text-base leading-7 text-[var(--muted)]">
+                        A Password Generator is a security tool designed to produce random, high-entropy character sequences that are virtually impossible for humans to guess or automated brute-force scripts to crack. By combining letters, numbers, and symbols, it helps create distinct passwords for every application and account you use.
                     </p>
                 </div>
 
-                <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                    <StatCard label="Length" value={String(length)} />
-                    <StatCard label="Enabled sets" value={String(selectedGroupsCount)} />
+                <div>
+                    <h2 className="text-2xl font-bold tracking-tight text-[var(--foreground)]">How to Use Password Generator</h2>
+                    <ol className="mt-2 list-decimal list-inside space-y-2 text-base leading-7 text-[var(--muted)]">
+                        <li>Set your desired password length using the slider (we recommend 14-16 characters or more).</li>
+                        <li>Toggle character sets (uppercase letters, lowercase letters, numbers, and special symbols) to match your target system&apos;s complexity requirements.</li>
+                        <li>Click the <strong>Generate</strong> or <strong>Regenerate</strong> button to run the randomized character selection loop.</li>
+                        <li>Click <strong>Copy</strong> to transfer your newly minted secure password straight to your clipboard.</li>
+                    </ol>
                 </div>
 
-                <div className="mt-5 rounded-[1.5rem] border border-[var(--border)] bg-[var(--background)]/60 p-4 text-sm leading-7 text-[var(--muted)]">
-                    Tip: use at least three character groups and a length of 14+ for stronger passwords.
+                <div className="grid gap-6 sm:grid-cols-2">
+                    <div>
+                        <h3 className="text-xl font-bold text-[var(--foreground)]">Benefits of Password Generator</h3>
+                        <ul className="mt-2 list-disc list-inside space-y-2 text-sm leading-6 text-[var(--muted)]">
+                            <li><strong>Cryptographically Secure</strong>: Utilizes the browser&apos;s built-in Web Cryptography API (`crypto.getRandomValues`) for genuine randomness, not pseudo-random numbers.</li>
+                            <li><strong>Zero Network Footprint</strong>: Executes entirely on your local CPU. Your generated passwords are never transmitted over the internet or saved to external servers.</li>
+                            <li><strong>Entropy Control</strong>: Calculates and displays strength classes in real-time based on selected character pool sizes and lengths.</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 className="text-xl font-bold text-[var(--foreground)]">Frequently Asked Questions (FAQ)</h3>
+                        <div className="mt-2 space-y-3 text-sm leading-6 text-[var(--muted)]">
+                            <div>
+                                <p className="font-semibold text-[var(--foreground)]">What makes a password truly secure?</p>
+                                <p>A secure password relies on high entropy (randomness) and length. A 16-character password with a mix of numbers, casing, and symbols takes trillions of years to guess using modern hardware.</p>
+                            </div>
+                            <div>
+                                <p className="font-semibold text-[var(--foreground)]">Is it safe to generate passwords online?</p>
+                                <p>Yes, provided the tool runs client-side. Since ParthaTools executes all logic in your browser memory, no web server or third party can intercept the generated output.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </article>
+        </div>
     );
 }
 
