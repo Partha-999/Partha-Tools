@@ -84,8 +84,8 @@ export default function PrivacyPolicyPage() {
                         <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
                             If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at:
                         </p>
-                        <a href="mailto:privacy@parthatools.dev" className="mt-3 inline-block text-sm font-semibold text-[var(--accent)] hover:underline">
-                            privacy@parthatools.dev
+                        <a href="mailto:privacy@parthatools.me" className="mt-3 inline-block text-sm font-semibold text-[var(--accent)] hover:underline">
+                            privacy@parthatools.me
                         </a>
                     </div>
                 </section>

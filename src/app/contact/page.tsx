@@ -58,8 +58,8 @@ export default function ContactPage() {
                             <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
                                 Feel free to email us directly for partnerships, questions, or issues.
                             </p>
-                            <a href="mailto:support@parthatools.dev" className="mt-4 inline-block text-sm font-semibold text-[var(--accent)] hover:underline">
-                                support@parthatools.dev
+                            <a href="mailto:support@parthatools.me" className="mt-4 inline-block text-sm font-semibold text-[var(--accent)] hover:underline">
+                                support@parthatools.me
                             </a>
                         </div>
 
