@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://parthatools.me"),
+  metadataBase: new URL("https://www.parthatools.me"),
   title: {
     default: "ParthaTools | Modern Utility Tools",
     template: "%s | ParthaTools",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "ParthaTools | Modern Utility Tools",
     description: "ParthaTools is a modern utility homepage for developer, PDF, image, text, and web tools.",
-    url: "https://parthatools.me",
+    url: "https://www.parthatools.me",
     siteName: "ParthaTools",
     locale: "en_US",
     type: "website",
