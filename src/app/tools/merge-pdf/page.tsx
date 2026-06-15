@@ -4,6 +4,7 @@ import Link from "next/link";
 import { MergePDFTool } from "@/components/merge-pdf-tool";
 import { getToolBySlug } from "@/data/tools";
 import { getToolMetadata } from "@/utils/metadata";
+import { ToolDetails } from "@/components/tool-details";
 
 const tool = getToolBySlug("merge-pdf");
 
@@ -31,6 +32,7 @@ export default function MergePDFPage() {
             </header>
 
             <MergePDFTool />
+            <ToolDetails slug="merge-pdf" />
         </main>
     );
 }

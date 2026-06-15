@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { JsonFormatterTool } from "@/components/json-formatter-tool";
 import { getToolMetadata } from "@/utils/metadata";
+import { ToolDetails } from "@/components/tool-details";
 
 export const metadata: Metadata = getToolMetadata(
     "json-formatter",
@@ -28,6 +29,7 @@ export default function JsonFormatterPage() {
             </header>
 
             <JsonFormatterTool />
+            <ToolDetails slug="json-formatter" />
         </main>
     );
 }

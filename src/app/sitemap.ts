@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
 import { tools } from "@/data/tools";
+import { blogPosts } from "@/data/blog-posts";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = "https://parthatools.me";
+    const baseUrl = "https://www.parthatools.me";
 
     // Static pages
     const staticPaths = ["", "/about", "/contact", "/privacy-policy", "/terms"];
@@ -21,5 +22,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.9,
     }));
 
-    return [...staticPages, ...toolPages];
+    // Blog pages
+    const blogIndexPage = {
+        url: `${baseUrl}/blog`,
+        lastModified: new Date(),
+        changeFrequency: "weekly" as const,
+        priority: 0.8,
+    };
+
+    const blogPostPages = blogPosts.map((post) => ({
+        url: `${baseUrl}/blog/${post.slug}`,
+        lastModified: new Date(),
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+    }));
+
+    return [...staticPages, ...toolPages, blogIndexPage, ...blogPostPages];
 }

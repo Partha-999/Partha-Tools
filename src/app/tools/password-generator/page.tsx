@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { PasswordGeneratorTool } from "@/components/password-generator-tool";
 import { getToolMetadata } from "@/utils/metadata";
+import { ToolDetails } from "@/components/tool-details";
 
 export const metadata: Metadata = getToolMetadata(
     "password-generator",
@@ -28,6 +29,7 @@ export default function PasswordGeneratorPage() {
             </header>
 
             <PasswordGeneratorTool />
+            <ToolDetails slug="password-generator" />
         </main>
     );
 }

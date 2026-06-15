@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CompressPDFTool } from "@/components/compress-pdf-tool";
 import { getToolBySlug } from "@/data/tools";
 import { getToolMetadata } from "@/utils/metadata";
+import { ToolDetails } from "@/components/tool-details";
 
 const tool = getToolBySlug("compress-pdf");
 
@@ -31,6 +32,7 @@ export default function CompressPDFPage() {
             </header>
 
             <CompressPDFTool />
+            <ToolDetails slug="compress-pdf" />
         </main>
     );
 }

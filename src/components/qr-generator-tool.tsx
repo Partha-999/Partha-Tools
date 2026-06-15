@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import QRCode from "qrcode";
 
-const starterValue = "https://parthatools.me";
+const starterValue = "https://www.parthatools.me";
 
 export function QrGeneratorTool() {
     const [value, setValue] = useState(starterValue);

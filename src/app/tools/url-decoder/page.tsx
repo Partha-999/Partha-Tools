@@ -4,6 +4,7 @@ import Link from "next/link";
 import { URLDecoderTool } from "@/components/url-decoder-tool";
 import { getToolBySlug } from "@/data/tools";
 import { getToolMetadata } from "@/utils/metadata";
+import { ToolDetails } from "@/components/tool-details";
 
 const tool = getToolBySlug("url-decoder");
 
@@ -31,6 +32,7 @@ export default function URLDecoderPage() {
             </header>
 
             <URLDecoderTool />
+            <ToolDetails slug="url-decoder" />
         </main>
     );
 }

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { SplitPDFTool } from "@/components/split-pdf-tool";
 import { getToolBySlug } from "@/data/tools";
 import { getToolMetadata } from "@/utils/metadata";
+import { ToolDetails } from "@/components/tool-details";
 
 const tool = getToolBySlug("split-pdf");
 
@@ -31,6 +32,7 @@ export default function SplitPDFPage() {
             </header>
 
             <SplitPDFTool />
+            <ToolDetails slug="split-pdf" />
         </main>
     );
 }

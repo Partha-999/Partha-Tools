@@ -63,7 +63,7 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
             openGraph: {
                 title: "Tool | ParthaTools",
                 description: "Dedicated tool page on ParthaTools.",
-                url: `https://parthatools.me/tools/${slug}`,
+                url: `https://www.parthatools.me/tools/${slug}`,
                 type: "website",
             },
             twitter: {
@@ -86,7 +86,7 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
             openGraph: {
                 title: "Tool not found | ParthaTools",
                 description: "The requested tool could not be found in the ParthaTools registry.",
-                url: `https://parthatools.me/tools/${slug}`,
+                url: `https://www.parthatools.me/tools/${slug}`,
                 type: "website",
             },
             twitter: {
@@ -106,7 +106,7 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
         openGraph: {
             title: tool.seoTitle,
             description: tool.seoDescription,
-            url: `https://parthatools.me/tools/${tool.slug}`,
+            url: `https://www.parthatools.me/tools/${tool.slug}`,
             type: "website",
         },
         twitter: {

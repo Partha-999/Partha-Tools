@@ -4,6 +4,7 @@ import Link from "next/link";
 import { JPGToPDFTool } from "@/components/jpg-to-pdf-tool";
 import { getToolBySlug } from "@/data/tools";
 import { getToolMetadata } from "@/utils/metadata";
+import { ToolDetails } from "@/components/tool-details";
 
 const tool = getToolBySlug("jpg-to-pdf");
 
@@ -31,6 +32,7 @@ export default function JPGToPDFPage() {
             </header>
 
             <JPGToPDFTool />
+            <ToolDetails slug="jpg-to-pdf" />
         </main>
     );
 }

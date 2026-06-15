@@ -4,6 +4,7 @@ import Link from "next/link";
 import { URLEncoderTool } from "@/components/url-encoder-tool";
 import { getToolBySlug } from "@/data/tools";
 import { getToolMetadata } from "@/utils/metadata";
+import { ToolDetails } from "@/components/tool-details";
 
 const tool = getToolBySlug("url-encoder");
 
@@ -31,6 +32,7 @@ export default function URLEncoderPage() {
             </header>
 
             <URLEncoderTool />
+            <ToolDetails slug="url-encoder" />
         </main>
     );
 }

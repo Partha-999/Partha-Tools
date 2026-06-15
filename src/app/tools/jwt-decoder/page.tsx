@@ -4,6 +4,7 @@ import Link from "next/link";
 import { JWTDecoderTool } from "@/components/jwt-decoder-tool";
 import { getToolBySlug } from "@/data/tools";
 import { getToolMetadata } from "@/utils/metadata";
+import { ToolDetails } from "@/components/tool-details";
 
 const tool = getToolBySlug("jwt-decoder");
 
@@ -31,6 +32,7 @@ export default function JWTDecoderPage() {
             </header>
 
             <JWTDecoderTool />
+            <ToolDetails slug="jwt-decoder" />
         </main>
     );
 }

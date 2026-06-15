@@ -15,7 +15,7 @@ export function getToolMetadata(slug: string, defaultTitle: string, defaultDesc:
         openGraph: {
             title,
             description,
-            url: `https://parthatools.me/tools/${slug}`,
+            url: `https://www.parthatools.me/tools/${slug}`,
             type: "website",
         },
         twitter: {

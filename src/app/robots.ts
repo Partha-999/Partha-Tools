@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
             userAgent: "*",
             allow: "/",
         },
-        sitemap: "https://parthatools.me/sitemap.xml",
+        sitemap: "https://www.parthatools.me/sitemap.xml",
     };
 }

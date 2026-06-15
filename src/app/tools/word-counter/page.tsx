@@ -4,6 +4,7 @@ import Link from "next/link";
 import { WordCounterTool } from "@/components/word-counter-tool";
 import { getToolBySlug } from "@/data/tools";
 import { getToolMetadata } from "@/utils/metadata";
+import { ToolDetails } from "@/components/tool-details";
 
 const tool = getToolBySlug("word-counter");
 
@@ -31,6 +32,7 @@ export default function WordCounterPage() {
             </header>
 
             <WordCounterTool />
+            <ToolDetails slug="word-counter" />
         </main>
     );
 }

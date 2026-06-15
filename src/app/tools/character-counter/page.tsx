@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CharacterCounterTool } from "@/components/character-counter-tool";
 import { getToolBySlug } from "@/data/tools";
 import { getToolMetadata } from "@/utils/metadata";
+import { ToolDetails } from "@/components/tool-details";
 
 const tool = getToolBySlug("character-counter");
 
@@ -31,6 +32,7 @@ export default function CharacterCounterPage() {
             </header>
 
             <CharacterCounterTool />
+            <ToolDetails slug="character-counter" />
         </main>
     );
 }

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: "Contact Us | ParthaTools",
         description: "Get in touch with ParthaTools for support, feedback, or developer tool inquiries.",
-        url: "https://parthatools.me/contact",
+        url: "https://www.parthatools.me/contact",
         type: "website",
     },
     twitter: {

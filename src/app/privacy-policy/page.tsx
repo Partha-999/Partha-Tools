@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: "Privacy Policy | ParthaTools",
         description: "Read the ParthaTools Privacy Policy. Learn how we guarantee complete security through 100% client-side data execution.",
-        url: "https://parthatools.me/privacy-policy",
+        url: "https://www.parthatools.me/privacy-policy",
         type: "website",
     },
     twitter: {

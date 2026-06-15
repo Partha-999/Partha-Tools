@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { Base64EncoderTool } from "@/components/base64-encoder-tool";
 import { getToolMetadata } from "@/utils/metadata";
+import { ToolDetails } from "@/components/tool-details";
 
 export const metadata: Metadata = getToolMetadata(
     "base64-encoder",
@@ -28,6 +29,7 @@ export default function Base64EncoderPage() {
             </header>
 
             <Base64EncoderTool />
+            <ToolDetails slug="base64-encoder" />
         </main>
     );
 }

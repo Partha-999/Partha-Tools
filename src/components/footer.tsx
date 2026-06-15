@@ -36,6 +36,9 @@ export function Footer() {
                         <Link href="/contact" className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">
                             Contact
                         </Link>
+                        <Link href="/blog" className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">
+                            Blog
+                        </Link>
                     </div>
                     <div className="flex flex-col gap-3">
                         <p className="text-xs font-bold uppercase tracking-wider text-[var(--foreground)]">Legal</p>

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-const starterInput = "https://parthatools.me/search?query=react & nextjs & category=developer tools";
+const starterInput = "https://www.parthatools.me/search?query=react & nextjs & category=developer tools";
 
 export function URLEncoderTool() {
     const [input, setInput] = useState(starterInput);
@@ -76,35 +76,29 @@ export function URLEncoderTool() {
                             <button
                                 type="button"
                                 onClick={() => setMode("component")}
-                                className={`flex cursor-pointer flex-col text-left rounded-2xl border p-4 transition-all w-full min-h-[8rem] ${
-                                    mode === "component"
+                                className={`flex cursor-pointer flex-col text-left rounded-2xl border p-4 transition-all w-full min-h-[8rem] ${mode === "component"
                                         ? "border-slate-900 bg-slate-900 text-white dark:border-slate-100 dark:bg-slate-100 dark:text-slate-950 shadow-[var(--shadow-soft)]"
                                         : "border-[var(--border)] bg-[var(--background)]/50 text-[var(--foreground)] hover:border-[var(--border-strong)]"
-                                }`}
+                                    }`}
                             >
-                                <span className={`text-sm font-semibold ${
-                                    mode === "component" ? "text-white dark:text-slate-950" : "text-[var(--foreground)]"
-                                }`}>Encode Component</span>
-                                <span className={`mt-2 text-xs ${
-                                    mode === "component" ? "text-slate-300 dark:text-slate-600" : "text-[var(--muted)]"
-                                }`}>Encodes all characters including /, ?, =, &, etc. Recommended for query parameters.</span>
+                                <span className={`text-sm font-semibold ${mode === "component" ? "text-white dark:text-slate-950" : "text-[var(--foreground)]"
+                                    }`}>Encode Component</span>
+                                <span className={`mt-2 text-xs ${mode === "component" ? "text-slate-300 dark:text-slate-600" : "text-[var(--muted)]"
+                                    }`}>Encodes all characters including /, ?, =, &, etc. Recommended for query parameters.</span>
                             </button>
 
                             <button
                                 type="button"
                                 onClick={() => setMode("uri")}
-                                className={`flex cursor-pointer flex-col text-left rounded-2xl border p-4 transition-all w-full min-h-[8rem] ${
-                                    mode === "uri"
+                                className={`flex cursor-pointer flex-col text-left rounded-2xl border p-4 transition-all w-full min-h-[8rem] ${mode === "uri"
                                         ? "border-slate-900 bg-slate-900 text-white dark:border-slate-100 dark:bg-slate-100 dark:text-slate-950 shadow-[var(--shadow-soft)]"
                                         : "border-[var(--border)] bg-[var(--background)]/50 text-[var(--foreground)] hover:border-[var(--border-strong)]"
-                                }`}
+                                    }`}
                             >
-                                <span className={`text-sm font-semibold ${
-                                    mode === "uri" ? "text-white dark:text-slate-950" : "text-[var(--foreground)]"
-                                }`}>Encode Full URI</span>
-                                <span className={`mt-2 text-xs ${
-                                    mode === "uri" ? "text-slate-300 dark:text-slate-600" : "text-[var(--muted)]"
-                                }`}>Preserves protocol and routing characters (http://, slashes, query delimiters).</span>
+                                <span className={`text-sm font-semibold ${mode === "uri" ? "text-white dark:text-slate-950" : "text-[var(--foreground)]"
+                                    }`}>Encode Full URI</span>
+                                <span className={`mt-2 text-xs ${mode === "uri" ? "text-slate-300 dark:text-slate-600" : "text-[var(--muted)]"
+                                    }`}>Preserves protocol and routing characters (http://, slashes, query delimiters).</span>
                             </button>
                         </div>
                     </div>

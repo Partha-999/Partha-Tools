@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: "About Us | ParthaTools",
         description: "Learn more about ParthaTools, our privacy-first philosophy, and browser-based developer utilities.",
-        url: "https://parthatools.me/about",
+        url: "https://www.parthatools.me/about",
         type: "website",
     },
     twitter: {
@@ -81,15 +81,49 @@ export default function AboutPage() {
                     </div>
                 </section>
 
-                <section className="rounded-[2rem] border border-[var(--border)] bg-[var(--card-strong)] p-8 shadow-[var(--shadow)] backdrop-blur-xl">
-                    <div className="max-w-3xl">
-                        <h2 className="text-2xl font-bold text-[var(--foreground)]">Why ParthaTools?</h2>
-                        <p className="mt-4 text-sm leading-7 text-[var(--muted)]">
-                            As developers, we frequently copy and paste structured payloads like JSON, JWTs, and secure credentials into external online utilities to format or inspect them. Many third-party utilities run server-side logic, presenting security and data leakage risks.
+                <section className="grid gap-8 lg:grid-cols-3">
+                    {/* Sandbox Security Mechanics */}
+                    <div className="lg:col-span-2 rounded-[2rem] border border-[var(--border)] bg-[var(--card-strong)] p-8 shadow-[var(--shadow)] backdrop-blur-xl space-y-6">
+                        <h2 className="text-2xl font-bold text-[var(--foreground)]">Technical Sandbox & Security Architecture</h2>
+                        <p className="text-sm leading-7 text-[var(--muted)]">
+                            ParthaTools operates on a zero-trust architecture. When you upload a file or paste standard payloads into our tools, all operations are isolated within the browser&apos;s client-side memory context. Our codebase implements native browser capabilities, local JavaScript arrays, and secure compiled WebAssembly tools.
                         </p>
-                        <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
-                            ParthaTools resolves this by offering powerful utility components that run 100% inside your browser environment. Your data stays on your machine, ensuring compliance with strict security protocols while providing an experience that matches modern design sensibilities.
+                        <p className="text-sm leading-7 text-[var(--muted)]">
+                            Because there is no communication with back-end databases, the processing environment is bounded by the browser&apos;s V8 engine sandboxing. This limits memory allocations dynamically and guarantees that data structures—including certificates, personal files, and authorization keys—cannot be read by external scripts or stored on cloud drives. It remains completely protected within transient runtime heap storage.
                         </p>
+                        <div className="rounded-xl border border-[var(--border)] bg-[var(--background)] p-4 font-mono text-xs text-[var(--foreground)]">
+                            <span className="text-[var(--accent)]">{"// Client-Side Process Isolation Verification"}</span><br />
+                            const processLocally = (inputData) =&gt; &#123;<br />
+                            &nbsp;&nbsp;console.log(&quot;Processing payload locally...&quot;);<br />
+                            &nbsp;&nbsp;<span className="text-[var(--accent)]">{"// Executed purely in transient heap memory"}</span><br />
+                            &nbsp;&nbsp;return sandboxCompile(inputData);<br />
+                            &#125;;
+                        </div>
+                    </div>
+
+                    {/* Founder & Project Bio */}
+                    <div className="rounded-[2rem] border border-[var(--border)] bg-[var(--card)] p-8 shadow-[var(--shadow-soft)] backdrop-blur-xl flex flex-col justify-between">
+                        <div className="space-y-4">
+                            <h2 className="text-2xl font-bold text-[var(--foreground)]">Founder Story</h2>
+                            <p className="text-sm leading-6 text-[var(--muted)]">
+                                ParthaTools was founded by Partha, a developer seeking a simpler, faster, and more private alternative to bloated online converters.
+                            </p>
+                            <p className="text-sm leading-6 text-[var(--muted)]">
+                                Frustrated by tools with subscription traps, tracking scripts, and server-side processing, Partha created these utilities to provide developers with a clean sandbox environment.
+                            </p>
+                        </div>
+                        <div className="mt-8 border-t border-[var(--border)] pt-6">
+                            <p className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">Open Source Codebase</p>
+                            <a
+                                href="https://github.com/partha-999/partha-tools"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mt-2 inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)] hover:underline"
+                            >
+                                Verify on GitHub
+                                <span>→</span>
+                            </a>
+                        </div>
                     </div>
                 </section>
 

@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { QrGeneratorTool } from "@/components/qr-generator-tool";
 import { getToolMetadata } from "@/utils/metadata";
+import { ToolDetails } from "@/components/tool-details";
 
 export const metadata: Metadata = getToolMetadata(
     "qr-generator",
@@ -28,6 +29,7 @@ export default function QrGeneratorPage() {
             </header>
 
             <QrGeneratorTool />
+            <ToolDetails slug="qr-generator" />
         </main>
     );
 }

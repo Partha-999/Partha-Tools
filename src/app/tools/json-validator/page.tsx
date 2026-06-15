@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { JsonValidatorTool } from "@/components/json-validator-tool";
 import { getToolMetadata } from "@/utils/metadata";
+import { ToolDetails } from "@/components/tool-details";
 
 export const metadata: Metadata = getToolMetadata(
     "json-validator",
@@ -28,6 +29,7 @@ export default function JsonValidatorPage() {
             </header>
 
             <JsonValidatorTool />
+            <ToolDetails slug="json-validator" />
         </main>
     );
 }
